@@ -26,7 +26,7 @@
 # );
 
 # Database driver: mysql, pgsql, sqlite
-#driver = 
+driver = mysql
 
 # Database connection string. This is driver-specific setting.
 #
@@ -63,14 +63,14 @@
 #   connect = host=sql.example.com dbname=virtual user=virtual password=blarg
 #   connect = /etc/dovecot/authdb.sqlite
 #
-#connect =
+connect = host=prowl dbname=mailtest user=dovecot password=test
 
 # Default password scheme.
 #
 # List of supported schemes is in
 # http://wiki2.dovecot.org/Authentication/PasswordSchemes
 #
-#default_pass_scheme = MD5
+default_pass_scheme = SHA512
 
 # passdb query to retrieve the password. It can return fields:
 #   password - The user's password. This field must be returned.
@@ -122,15 +122,22 @@
 #user_query = \
 #  SELECT home, uid, gid \
 #  FROM users WHERE username = '%n' AND domain = '%d'
+user_query = \
+SELECT username as user, \
+  concat('/',home_dir) AS home, uid, gid \
+  FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' \
+  and domain_id = virtual_domains.id;
+
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use
 # userdb prefetch instead of userdb sql in dovecot.conf. In that case you'll
 # also have to return userdb fields in password_query prefixed with "userdb_"
 # string. For example:
-#password_query = \
-#  SELECT userid AS user, password, \
-#    home AS userdb_home, uid AS userdb_uid, gid AS userdb_gid \
-#  FROM users WHERE userid = '%u'
+password_query = \
+  SELECT username as user, NULL as password, 'Y' as nopassword, \
+  concat('/',home_dir) AS userdb_home, uid AS userdb_uid, gid AS userdb_gid \
+  FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' \
+  and domain_id = virtual_domains.id AND password_hash = SHA2(concat(hash_salt,'%w'),512)
 
 # Query to get a list of all usernames.
 #iterate_query = SELECT username AS user FROM users
