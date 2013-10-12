@@ -1,4 +1,5 @@
 #connect = host=localhost dbname=mails user=testuser password=pass
+connect = host=prowl dbname=mailtest user=dovecot password=test
 
 # CREATE TABLE quota (
 #   username varchar(100) not null,

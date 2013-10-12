@@ -124,7 +124,9 @@ default_pass_scheme = SHA512
 #  FROM users WHERE username = '%n' AND domain = '%d'
 user_query = \
 SELECT username as user, \
-  concat('/',home_dir) AS home, uid, gid \
+  concat(username,'@',domain_name) as user, \
+  concat('/',home_dir) AS home, uid, gid, \
+  concat('*:storage=',quota_size,'M') as quota_rule \
   FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' \
   and domain_id = virtual_domains.id;
 
@@ -134,8 +136,10 @@ SELECT username as user, \
 # also have to return userdb fields in password_query prefixed with "userdb_"
 # string. For example:
 password_query = \
-  SELECT username as user, NULL as password, 'Y' as nopassword, \
-  concat('/',home_dir) AS userdb_home, uid AS userdb_uid, gid AS userdb_gid \
+  SELECT concat(username,'@',domain_name) as userdb_user, \
+  NULL as password, 'Y' as nopassword, \
+  concat('/',home_dir) AS userdb_home, uid AS userdb_uid, gid AS userdb_gid, \
+  concat('*:storage=',quota_size,'M') as userdb_quota_rule \
   FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' \
   and domain_id = virtual_domains.id AND password_hash = SHA2(concat(hash_salt,'%w'),512)
 
