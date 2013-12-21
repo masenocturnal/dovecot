@@ -16,6 +16,7 @@ userdb {
   driver = prefetch
 }
 
+## this is used by lda / lmtp
 userdb {
   driver = sql
   args = /etc/dovecot/dovecot-sql.conf.ext
