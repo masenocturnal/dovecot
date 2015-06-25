@@ -6,9 +6,10 @@
 
 # Example master user passdb using passwd-file. You can use any passdb though.
 passdb {
-  driver = passwd-file
-  master = yes
-  args = /etc/dovecot/master-users
+  driver = sql
+  #master = yes
+  #args = /etc/dovecot/master-users
+  args = /etc/dovecot/dovecot-sql.conf.ext
 
   # Unless you're using PAM, you probably still want the destination user to
   # be looked up from passdb that it really exists. pass=yes does that.
