@@ -119,13 +119,13 @@ default_pass_scheme = SHA512-CRYPT
 #   user_query = SELECT dir AS home, user AS uid, group AS gid FROM users where userid = '%u'
 #   user_query = SELECT home, 501 AS uid, 501 AS gid FROM users WHERE userid = '%u'
 #
-user_query =  SELECT username, concat(username,'@',domain_name) as user, concat('/',home_dir) AS home, uid, gid, concat('*:storage=',quota_size, 'M') as quota_rule FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' and domain_id = virtual_domains.id;
+user_query =  SELECT 'usr',username, concat(username,'@',domain_name) as user, concat('/',home_dir) AS home, uid, gid, concat('*:storage=',quota_size, 'M') as quota_rule FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' and domain_id = virtual_domains.id;
 
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use
 # userdb prefetch instead of userdb sql in dovecot.conf. In that case you'll
 # also have to return userdb fields in password_query prefixed with "userdb_"
 # string. For example:
-password_query =  SELECT username as userdb_username, concat(username, '@', domain_name ) as userdb_user, concat('/',home_dir) AS userdb_home, uid as userdb_uid, gid as userdb_gid, concat('*:storage=',quota_size, 'M') as quota_rule, password_hash as password from virtual_users vu JOIN virtual_domains vd ON vu.domain_id = vd.id where vu.username = '%n' AND vd.domain_name ='%d';
+password_query =  SELECT 'pass', username as userdb_username, concat(username, '@', domain_name ) as userdb_user, concat('/',home_dir) AS userdb_home, uid as userdb_uid, gid as userdb_gid, concat('*:storage=',quota_size, 'M') as quota_rule, password_hash as password from virtual_users vu JOIN virtual_domains vd ON vu.domain_id = vd.id where vu.username = '%n' AND vd.domain_name ='%d';
 # Query to get a list of all usernames.
 #iterate_query = SELECT username AS user FROM users
