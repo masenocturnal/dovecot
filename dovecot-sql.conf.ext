@@ -119,7 +119,7 @@ default_pass_scheme = SHA512-CRYPT
 #   user_query = SELECT dir AS home, user AS uid, group AS gid FROM users where userid = '%u'
 #   user_query = SELECT home, 501 AS uid, 501 AS gid FROM users WHERE userid = '%u'
 #
-user_query =  SELECT 'usr',username, concat(username,'@',domain_name) as user, concat('/',home_dir) AS home, uid, gid, concat('*:storage=',quota_size, 'M') as quota_rule FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' and domain_id = virtual_domains.id;
+user_query =  SELECT concat('/',home_dir) AS home, uid, gid, concat('*:storage=',quota_size, 'M') as quota_rule FROM virtual_users, virtual_domains WHERE username = '%n' and domain_name = '%d' and domain_id = virtual_domains.id;
 
 
 # If you wish to avoid two SQL lookups (passdb + userdb), you can use
