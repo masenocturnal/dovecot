@@ -1,5 +1,4 @@
-#connect = host=localhost dbname=mails user=testuser password=pass
-connect = host=localhost dbname=mailtest user=postfix password=test
+connect = host=172.18.0.1 dbname=mailtest user=dovecot password=test
 
 
 
