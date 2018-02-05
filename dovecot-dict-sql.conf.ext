@@ -1,4 +1,4 @@
-connect = host=172.18.0.1 dbname=mailtest user=dovecot password=test
+connect = host=dockerfiles_db_1 dbname=mailtest user=dovecot password=test
 
 
 
